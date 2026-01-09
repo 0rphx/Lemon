@@ -94,7 +94,8 @@ export default function Home() {
         console.log('Use effect running ...')
         const getrisk = async () => {
             try {
-                const res = await axios.get(`https://lemonbackend.netlify.app/.netlify/functions/index/getrisk`);
+                const res = await axios.get(`${import.meta.env.VITE_API_URL}/index/getrisk`);
+
 
                 if (res.status === 200) {
                     localStorage.setItem("risk--object", JSON.stringify(res.data));
