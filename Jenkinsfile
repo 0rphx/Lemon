@@ -9,7 +9,7 @@ pipeline {
         stage('Checkout code') {
             steps {
 
-               git branch: 'devops-branch', url: 'https://github.com/0rphx/lemonbackend.git'
+               git branch: 'devops-branch', url: 'https://github.com/0rphx/Lemon.git'
 
             }
         stage('install dependencies') {
