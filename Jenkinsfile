@@ -6,21 +6,21 @@ pipeline {
     }
     stages {
 
-        stage(Checkout code) {
+        stage('Checkout code') {
             steps {
 
-               branch 'devops-branch', url: 'https://github.com/0rphx/lemonbackend.git'
+               git branch: 'devops-branch', url: 'https://github.com/0rphx/lemonbackend.git'
 
             }
-        stage(install dependencies) {
+        stage('install dependencies') {
             steps {
                 sh 'npm run install'
             }
-        stage (build)
+        stage ('build')
             steps {
                 sh 'npm run build'
             }    
-        stage(deploy){
+        stage('deploy'){
             steps {
                 sh 'netlify deploy --prod --dir=build--site-id $SITE_ID '
             }
