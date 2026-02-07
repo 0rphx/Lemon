@@ -46,6 +46,17 @@ pipeline {
                 }
             }
         }
+        stage('Deploy to EKS') {
+            steps {
+                sh '''
+                kubectl set image deployment/lemon-deployment \
+                lemon=$DOCKER_IMAGE:$DOCKER_TAG
+
+                kubectl rollout status deployment/lemon-deployment
+                '''
+            }
+        }
+
     }
 
     post {

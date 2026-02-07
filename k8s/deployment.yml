@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: lemon-deployment
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: lemon
+  template:
+    metadata:
+      labels:
+        app: lemon
+    spec:
+      containers:
+      - name: lemon
+        image: orphiic/lemon:latest   # Jenkins will update this
+        ports:
+        - containerPort: 80
