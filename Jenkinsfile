@@ -5,7 +5,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "orphiic/lemon"
-        DOCKER_TAG   = "latest"
+        DOCKER_TAG   = $BUILD_NUMBER
     }
 
     stages {
