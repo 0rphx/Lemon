@@ -5,7 +5,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = "orphiic/lemon"
-        DOCKER_TAG   = $BUILD_NUMBER
+        DOCKER_TAG   = ${BUILD_NUMBER}
     }
 
     stages {
