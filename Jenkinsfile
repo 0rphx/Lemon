@@ -4,7 +4,7 @@ pipeline {
     }
 
     environment {
-        DOCKER_IMAGE = "orphiic/Lemon"
+        DOCKER_IMAGE = "orphiic/lemon"
         DOCKER_TAG   = "latest"
     }
 
