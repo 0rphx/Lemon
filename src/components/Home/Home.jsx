@@ -46,7 +46,7 @@ const GlobalStyle = createGlobalStyle`
 
 export default function Home() {
 
-    const [_, setRiskObjects] = useState([{}]);
+    const [riskObjects, setRiskObjects] = useState([{}]);
     const [rangeValue, setRangeValue] = useState(5);
     const [nigerianStock, setNigeriaStock] = useState(0);
     const [foreignStock, setForeignStock] = useState(0);
@@ -61,6 +61,7 @@ export default function Home() {
 
 
     const handleInputChange = (event) => {
+        console.log(riskObjects)
         setRangeValue(parseInt(event.target.value, 10));
         const riskChosen = localStorage.getItem('risk--object');
         if (riskChosen) {
