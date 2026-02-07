@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'ec2-node'
+    }
 
     environment {
         DOCKER_IMAGE = "orphiic/Lemon"
