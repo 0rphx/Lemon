@@ -46,7 +46,7 @@ const GlobalStyle = createGlobalStyle`
 
 export default function Home() {
 
-    const [riskObjects, setRiskObjects] = useState([{}]);
+    const [_, setRiskObjects] = useState([{}]);
     const [rangeValue, setRangeValue] = useState(5);
     const [nigerianStock, setNigeriaStock] = useState(0);
     const [foreignStock, setForeignStock] = useState(0);
@@ -120,7 +120,7 @@ export default function Home() {
         }
 
         getrisk();
-    }, []);
+    }, [rangeValue]);
 
     return (
         <>
