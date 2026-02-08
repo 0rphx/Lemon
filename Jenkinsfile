@@ -6,6 +6,9 @@ pipeline {
     environment {
         DOCKER_IMAGE = "orphiic/lemon"
         DOCKER_TAG   = "${BUILD_NUMBER}"
+        IMAGE_TAG   = "${BUILD_NUMBER}"
+        AWS_REGION = "us-east-1"
+        ECR_REPO = "802870950659.dkr.ecr.us-east-1.amazonaws.com/ore/lemon"
     }
 
     stages {
@@ -27,35 +30,38 @@ pipeline {
                 sh 'npm run build'
             }
         }
-
-        stage('Build Docker Image') {
+        stage('Login to ECR') {
             steps {
                 sh '''
-                  docker build -t $DOCKER_IMAGE:$DOCKER_TAG .
+                aws ecr get-login-password --region $AWS_REGION \
+                | docker login --username AWS --password-stdin $ECR_REPO
                 '''
             }
         }
 
-        stage('Push Docker Image') {
-            steps {
-                withCredentials([string(credentialsId: 'dockerhub-password', variable: 'DOCKER_PASSWORD')]) {
-                    sh '''
-                      echo "$DOCKER_PASSWORD" | docker login -u orphiic --password-stdin
-                      docker push $DOCKER_IMAGE:$DOCKER_TAG
-                    '''
-                }
-            }
-        }
-        stage('Deploy to EKS') {
-            steps {
-                sh '''
-                kubectl set image deployment/lemon-deployment \
-                lemon=$DOCKER_IMAGE:$DOCKER_TAG
+    
 
-                kubectl rollout status deployment/lemon-deployment
-                '''
+        stage('Build Image') {
+            steps {
+                sh 'docker build -t lemon .'
             }
         }
+
+        stage('Tag Image') {
+            steps {
+                sh 'docker tag lemon:latest $ECR_REPO:$IMAGE_TAG'
+            }
+        }
+
+        stage('Push Image') {
+            steps {
+                sh 'docker push $ECR_REPO:$IMAGE_TAG'
+            }
+        }    
+
+    
+
+       
 
     }
 
