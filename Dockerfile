@@ -1,5 +1,5 @@
 # Build stage
-FROM node:18-alpine AS build
+FROM public.ecr.aws/lambda/nodejs:18 AS build
 WORKDIR /app
 COPY package*.json ./
 RUN npm install

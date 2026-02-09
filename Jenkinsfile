@@ -9,6 +9,7 @@ pipeline {
         IMAGE_TAG   = "${BUILD_NUMBER}"
         AWS_REGION = "us-east-1"
         ECR_REPO = "802870950659.dkr.ecr.us-east-1.amazonaws.com/ore/lemon"
+        S3_BUCKET  = "lemon-buckett"
     }
 
     stages {
@@ -30,40 +31,21 @@ pipeline {
                 sh 'npm run build'
             }
         }
-        stage('Login to ECR') {
-            steps {
-                sh '''
-                aws ecr get-login-password --region $AWS_REGION \
-                | docker login --username AWS --password-stdin $ECR_REPO
-                '''
-            }
-        }
-
-    
-
-        stage('Build Image') {
-            steps {
-                sh 'docker build -t lemon .'
-            }
-        }
-
-        stage('Tag Image') {
-            steps {
-                sh 'docker tag lemon:latest $ECR_REPO:$IMAGE_TAG'
-            }
-        }
-
-        stage('Push Image') {
-            steps {
-                sh 'docker push $ECR_REPO:$IMAGE_TAG'
-            }
-        }    
-
-    
-
        
-
+        stage('Deploy to S3') {
+            steps {
+                withCredentials([
+                    [$class: 'AmazonWebServicesCredentialsBinding',
+                     credentialsId: 'awscreds']
+                ]) {
+                    sh '''
+                      aws s3 sync build/ s3://$S3_BUCKET --delete --region $AWS_REGION
+                    '''
+                }
+            }
+        }
     }
+        
 
     post {
         success {
