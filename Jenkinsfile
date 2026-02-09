@@ -52,7 +52,7 @@ pipeline {
             echo 'Build and Dockerization successful 🎉'
         }
         failure {
-            echo 'Pipeline failed 1❌'
+            echo 'Pipeline failed ❌'
         }
     }
 }
